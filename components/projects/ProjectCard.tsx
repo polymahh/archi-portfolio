@@ -1,3 +1,5 @@
+import React from 'react';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 
 import { projectType } from './type';
@@ -54,14 +56,17 @@ function ProjectCard({ card, idx, handleClick }: { card: projectType; idx: numbe
         <h1 className="text-center font-lamore text-4xl font-normal uppercase leading-none md:text-left lg:text-[54px]">
           {card.title}
         </h1>
-        <span className="text-lg text-right text-accent-foreground lg:text-2xl">{card.location}</span>
+        <motion.div variants={imageAnimation} className="hidden opacity-0 md:flex  ">
+          <Image src={card.preview} alt="preview" height="120" width="300" />
+        </motion.div>
+        <span className=" text-right text-lg text-accent-foreground lg:text-2xl">{card.location}</span>
       </motion.div>
       <div
-        className="flex flex-col items-center gap-6 cursor-pointer md:hidden"
+        className="flex flex-col gap-6 cursor-pointer items-center md:hidden"
         onClick={() => handleClick(card.projectId)}
       >
-        <h1 className="text-4xl font-normal leading-none text-center uppercase font-lamore">{card.title}</h1>
-        <span className="text-lg text-right text-accent-foreground">{card.location}</span>
+        <h1 className="text-center font-lamore text-4xl font-normal uppercase leading-none">{card.title}</h1>
+        <span className=" text-right text-lg text-accent-foreground ">{card.location}</span>
       </div>
     </>
   );

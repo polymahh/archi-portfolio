@@ -2,7 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { getProjects } from '@/lib/requests';
 import { cn } from '@/lib/utils';
@@ -11,20 +11,21 @@ import Loading from '../Loading';
 import { Button, buttonVariants } from '../ui/button';
 import ProjectIndex from './ProjectIndex';
 import ProjectsCarousel from './ProjectsCarousel';
+import { useSearchParams } from 'next/navigation';
 
 function Projects() {
   const [index, setIndex] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   // TODO: remove animations later (manually disabled for now)
+  const params = useSearchParams();
+  const loaded = params.get('loaded');
 
-  const loaded = true; //  params.get("loaded")
-
-  // useEffect(() => {
-  //   if (loaded === "true") {
-  //     setLoading(false)
-  //   }
-  // }, [])
+  useEffect(() => {
+    if (loaded === 'true') {
+      setLoading(false);
+    }
+  }, []);
 
   const { data } = useQuery({
     queryKey: ['projects'],
@@ -63,11 +64,12 @@ function Projects() {
           </Button>
         </div>
       </div>
+
       {loading ? (
         <motion.div
           className={cn(
-            ' fixed left-0 top-0 z-20 h-screen w-screen overflow-hidden  ',
-            loaded ? 'md:hidden' : ' md:block',
+            ' fixed top-0 left-0 z-20 h-screen w-screen overflow-hidden  ',
+            loaded === 'true' ? 'md:hidden' : ' md:block',
           )}
           key={'loader'}
         >
